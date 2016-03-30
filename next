@@ -1,0 +1,28 @@
+#!/usr/local/bin/fish
+
+# TODO allow passing in different bases
+# (also useful for pull request creation)
+# branch (issue) | target branch | milestone (id)
+echo ok now
+set issue (~/code/zenflow/next.py)
+set base_branch develop
+
+echo here we go
+
+if [ -z "$issue" ]
+    # TODO refactor
+    echo 'No issue. Moving top backlog ticket'
+    set issue (start)
+else
+    echo 'Issue $issue'
+end
+
+set branch razzi/$issue
+
+if [ (git branch --list $branch) ]
+    git checkout $branch
+else
+    git fetch origin $base_branch
+    git checkout -b $branch origin/$base_branch
+    git branch -u origin/$branch
+end
