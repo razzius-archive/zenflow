@@ -7,6 +7,11 @@ import argparse
 import asyncio
 import os
 
+import requests
+
+BACKLOG_PIPELINE_ID = '54c19ad8f748cd180f07b4b6'
+IN_DEVELOPMENT_PIPELINE_ID = '54c19ad8f748cd180f07b4b4'
+
 
 async def get_zenhub_issues(client):
     async with client.get('https://api.zenhub.io/p1/repositories/14154595/board', headers={
@@ -77,13 +82,22 @@ async def main(verbosity=0):
           .format(target))
 
     # TODO do I need to pass the issue ID in the url and body?
-    requests.post('https://api.zenhub.io/v3/repositories/14154595/issues/{}/pipelines', params={
-        'issue_number': target,
-        'repo_id': 14154595,
-        'pipeline_id': '54c19ad8f748cd180f07b4b6',
-        # 'issue_title': ??
-    })
+    api_url = 'https://api.zenhub.io/v3/repositories/14154595/issues/{}/pipelines'.format(target)
 
+    resp = requests.put(
+        api_url,
+        headers={
+            'x-authentication-token': os.environ['ZENHUB_INTERNAL_API_TOKEN']
+        },
+        data={
+            'issue_number': target,
+            'repo_id': 14154595,
+            'from_pipeline_id': BACKLOG_PIPELINE_ID,
+            'pipeline_id': IN_DEVELOPMENT_PIPELINE_ID
+        }
+    )
+
+    print(resp)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
