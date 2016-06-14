@@ -10,16 +10,21 @@ logger = logging.getLogger()
 # logger.setLevel('DEBUG')
 
 
+# todo move to constants.py
 PIPELINE_IDS = {
+    'new_issues': '54c19ad8f748cd180f07b4b7',
     'backlog': '54c19ad8f748cd180f07b4b6',
     'in_development': '54c19ad8f748cd180f07b4b4',
-    'new_issues': '54c19ad8f748cd180f07b4b7',
     'pr_outstanding': '55c2c7964e6d61ea173a1ce8'
 }
 
 MILESTONE_IDS = {
     'v1.17': 85,
-    'v1.18': 88
+    'v1.18': 88,
+    'v1.19': 91,
+    'v1.20': 95,
+    'v1.21': 99,
+    'v1.22': 102
 }
 
 

@@ -11,6 +11,7 @@ cd ~/code/clint
 if [ -z "$issue" ]
     # TODO refactor
     echo 'No issue. Could move top backlog ticket'
+    exit
     # set issue (~/code/zenflow/start.py)
 else
     echo "Issue $issue"
@@ -24,7 +25,15 @@ if test "$current_branch" = "$target_branch"
 else if [ (git branch --list $target_branch) ]
     git checkout $target_branch
 else
-    git fetch origin $base_branch
-    git checkout -b $target_branch origin/$base_branch
-    and git push -u origin $target_branch
+    # todo fetch automatically (cron)
+    # git fetch origin $base_branch
+    git checkout develop
+    git checkout -b $target_branch
+    # blarg bogus - could stash and pop ;_;
+    # git reset --hard origin/$base_branch
+
+    # TODO this isn't working and is super dangerous :X
+    # hopefully matching current will work for setting upstream
+    # git checkout -b $target_branch origin/$base_branch
+    # and git push -u origin $target_branch
 end

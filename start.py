@@ -1,5 +1,7 @@
 #!/usr/bin/env python3.5
 
+import os
+
 from lib import (
     PIPELINE_IDS,
     async_execute,
@@ -7,9 +9,12 @@ from lib import (
     change_issue_pipeline
 )
 
+from git_utils import checkout_new_branch
+
 
 async def main(loop):
-    issue_number = await get_top_issue_by_pipeline(loop, 'backlog', 'razzius', 'v1.17')
+    milestone_name = os.environ['GITHUB_MILESTONE']
+    issue_number = await get_top_issue_by_pipeline(loop, 'backlog', 'razzius', milestone_name)
 
     print('Moving issue {} to "In Development"'.format(issue_number))
 
@@ -20,6 +25,9 @@ async def main(loop):
 
     # todo parse the output
     print(response)
+
+    checkout_new_branch('razzi/{}'.format(issue_number))
+
 
 if __name__ == '__main__':
     async_execute(main)
